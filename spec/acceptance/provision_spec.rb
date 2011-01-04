@@ -7,6 +7,11 @@ describe 'provisioning' do
     parsed.should have_key('id')
     parsed['id'].should_not be_nil
   end
+
+  it 'should save a record' do
+    post '/heroku/resources', {"heroku_id" => "app123@heroku.com"}.to_json
+    DB.get(parsed['id'])['heroku_id'].should == "app123@heroku.com"
+  end
 end
 
 describe 'deprovisioning' do
