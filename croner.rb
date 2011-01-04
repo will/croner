@@ -28,8 +28,18 @@ class Croner < Sinatra::Base
 
   post '/heroku/resources' do
     body = JSON.parse request.body.string
-    doc = DB.save_doc( {'params' => body} )
 
-    {:id => doc['_id']}.to_json
+    doc = DB.save_doc body
+
+    {:id => doc['id']}.to_json
+  end
+
+  delete '/heroku/resources/:id' do
+    begin
+      doc = DB.get params['id']
+      doc.destroy
+    rescue RestClient::ResourceNotFound
+      status 404
+    end
   end
 end
