@@ -4,6 +4,13 @@ Bundler.setup
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'couchrest'
+
+if ENV['RACK_ENV'] == 'production'
+  DB = CouchRest.database "http://withadoutheryraltionaper:yVF6gxqRqmsccBiawOcUraBs@will.cloudant.com/croner"
+else
+  DB = CouchRest.database! 'croner'
+end
 
 class Croner < Sinatra::Base
   configure(:development) do
@@ -20,6 +27,7 @@ class Croner < Sinatra::Base
   end
 
   post '/heroku/resources' do
-    {:id => 'abc'}.to_json
+    doc = DB.save_doc( {'params' => params} )
+    {:id => doc['_id']}.to_json
   end
 end

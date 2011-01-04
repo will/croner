@@ -2,13 +2,20 @@ GEM
   remote: http://rubygems.org/
   specs:
     backports (1.18.2)
+    couchrest (1.0.1)
+      json (>= 1.4.6)
+      mime-types (>= 1.15)
+      rest-client (>= 1.5.1)
     diff-lcs (1.1.2)
     json (1.4.6)
+    mime-types (1.16)
     monkey-lib (0.5.4)
       backports
     rack (1.2.1)
     rack-test (0.5.6)
       rack (>= 1.0)
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
     rspec (2.4.0)
       rspec-core (~> 2.4.0)
       rspec-expectations (~> 2.4.0)
@@ -36,6 +43,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  couchrest
   json
   rack-test
   rspec
