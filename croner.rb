@@ -9,6 +9,10 @@ class Croner < Sinatra::Base
     register Sinatra::Reloader
   end
 
+  use Rack::Auth::Basic do |username, password|
+    (username == 'heroku' && password == 'b1EWrHYXE1R5J71D') || (username == 'test')
+  end
+
   get '/' do
     "hello"
   end
