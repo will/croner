@@ -27,7 +27,9 @@ class Croner < Sinatra::Base
   end
 
   post '/heroku/resources' do
-    doc = DB.save_doc( {'params' => params} )
+    body = JSON.parse request.body.string
+    doc = DB.save_doc( {'params' => body} )
+
     {:id => doc['_id']}.to_json
   end
 end

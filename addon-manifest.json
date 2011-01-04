@@ -1,11 +1,11 @@
 {
-  "id": "myaddon",
+  "id": "croner",
   "api": {
-    "config_vars": [ "MYADDON_URL" ],
+    "config_vars": [ "CRONER_ID" ],
     "username": "heroku",
     "password": "b1EWrHYXE1R5J71D",
     "sso_salt": "CWcRxcgiCngr4FFa",
-    "production": "https://yourapp.com/",
+    "production": "https://croner.heroku.com/",
     "test": "http://localhost:3000/"
   }
 }
