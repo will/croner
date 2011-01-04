@@ -1,9 +1,6 @@
-require 'rubygems'
-require 'bundler'
-Bundler.setup
+require 'env'
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require 'couchrest'
 
 if ENV['RACK_ENV'] == 'production'
