@@ -1,0 +1,2 @@
+require 'croner'
+run Croner
