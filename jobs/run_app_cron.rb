@@ -8,8 +8,8 @@ class RunAppCron
         puts "run for #{id}"
         record_attempt_for app
         app.enqueue_next
+        app.post_cron_job
         app.save
-        #do_job api.mark.herokudev.com/cron
       else
         puts "#{id} no longer present"
       end

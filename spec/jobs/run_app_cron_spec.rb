@@ -11,6 +11,8 @@ describe RunAppCron, '.perform' do
   context 'with app present' do
     before(:each) do
       @app = App.create
+      App.stub!(:get).and_return @app
+      @app.stub!(:post_cron_job) # TODO: replace with webmock
     end
 
     def do_perform
@@ -22,7 +24,11 @@ describe RunAppCron, '.perform' do
       do_perform
     end
 
-    it 'should have heroku run the cron job'
+    it 'should have heroku run the cron job' do
+      @app.should_receive :post_cron_job
+      do_perform
+    end
+
     it 'should record the run'
     it 'should update the last attempt time' do
       @app.last_attempted.should be_nil
@@ -32,8 +38,8 @@ describe RunAppCron, '.perform' do
     end
 
     it 'should save the app' do
+      @app.should_receive :save
       do_perform
-      App.get(@app.id)['_rev'].should_not == @app['_rev']
     end
   end
 

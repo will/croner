@@ -18,4 +18,12 @@ class App < CouchRest::Model::Base
     Resque.enqueue_in period, RunAppCron, id
     self.next_scheduled = Time.now + period
   end
+
+  PostUrl = 'https://api.mark.herokudev.com/cron'
+  def post_cron_job
+    RestClient.post(
+      PostUrl,
+      JSON.dump({:heroku_id => heroku_id}),
+      :content_type => :json)
+  end
 end
