@@ -9,14 +9,19 @@ class Croner < Sinatra::Base
     register Sinatra::Reloader
   end
 
+  set :public, File.dirname(__FILE__) + '/public'
+
   use Rack::Auth::Basic do |username, password|
     (username == 'heroku' && password == 'b1EWrHYXE1R5J71D') ||
     (username == 'test')
   end unless ENV['RACK_ENV']=='test'
 
   get '/' do
-    #App.all.to_json
     haml :index
+  end
+
+  get '/apps' do
+    App.all.to_json
   end
 
   post '/heroku/resources' do
