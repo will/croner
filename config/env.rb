@@ -5,8 +5,8 @@ require 'json'
 require 'couchrest'
 require 'couchrest_model'
 
-if ENV['RACK_ENV'] == 'production'
-  DB = CouchRest.database "http://withadoutheryraltionaper:yVF6gxqRqmsccBiawOcUraBs@will.cloudant.com/croner"
+if ENV['COUCHDB_URL']
+  DB = CouchRest.database ENV['COUCHDB_URL']
 else
   DB = CouchRest.database! 'croner'
 end
