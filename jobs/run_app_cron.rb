@@ -5,12 +5,13 @@ class RunAppCron
     def perform(id)
       app = App.get id
       if app
-        puts "run for #{id}"
+        #puts "run for #{id}"
         record_attempt_for app
         app.enqueue_next
+        app.save
         #do_job
       else
-        puts "#{id} no longer present"
+        #puts "#{id} no longer present"
       end
     end
 
@@ -18,7 +19,6 @@ class RunAppCron
 
     def record_attempt_for(app)
       app.last_attempted = Time.now
-      app.save
     end
   end
 end

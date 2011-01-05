@@ -30,6 +30,11 @@ describe RunAppCron, '.perform' do
       refreshed = App.get @app.id
       refreshed.last_attempted.should_not be_nil
     end
+
+    it 'should save the app' do
+      do_perform
+      App.get(@app.id)['_rev'].should_not == @app['_rev']
+    end
   end
 
   context 'when app has been deleted' do
