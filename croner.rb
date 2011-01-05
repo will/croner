@@ -1,4 +1,3 @@
-require 'config/env'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
@@ -10,11 +9,6 @@ class Croner < Sinatra::Base
   end
 
   set :public, File.dirname(__FILE__) + '/public'
-
-  use Rack::Auth::Basic do |username, password|
-    (username == 'heroku' && password == 'b1EWrHYXE1R5J71D') ||
-    (username == 'test')
-  end unless ENV['RACK_ENV']=='test'
 
   get '/' do
     @apps = App.all

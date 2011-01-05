@@ -4,7 +4,12 @@
     %title croner
   %body
     %h1 croner
-    Current time: #{Time.now}
+    %dl
+      %dt Current time:
+      %dd #{Time.now}
+      %dt
+        %a(href='/resque') resque admin
+    %hr
     %table#table
       %thead
         %tr
