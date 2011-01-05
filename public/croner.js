@@ -1,2 +1,3 @@
 $(function() {
-  });
+  $("#table").dataTable();
+});

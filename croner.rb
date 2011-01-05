@@ -17,11 +17,8 @@ class Croner < Sinatra::Base
   end unless ENV['RACK_ENV']=='test'
 
   get '/' do
+    @apps = App.all
     haml :index
-  end
-
-  get '/apps' do
-    App.all.to_json
   end
 
   post '/heroku/resources' do

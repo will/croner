@@ -4,7 +4,20 @@
     %title croner
   %body
     %h1 croner
-    #table
+    %table#table
+      %thead
+        %tr
+          %th App
+          %th period
+          %th last attempted
+          %th next run
+      %tbody
+        - @apps.each do |app|
+          %tr
+            %td= app.heroku_id
+            %td= app.period
+            %td= app.last_attempted
+            %td= app.next_scheduled
 
     %script(src='jquery.js')
     %script(src='jquery.dataTables.min.js')
