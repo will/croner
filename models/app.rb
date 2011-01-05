@@ -3,7 +3,7 @@ class App < CouchRest::Model::Base
   property :heroku_id
   property :callback_url
   property :plan
-  property :period, Integer, :default => 10
+  property :period, Integer, :default => 60
   property :last_attempted, Time
   property :next_scheduled, Time
   timestamps!
