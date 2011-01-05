@@ -3,4 +3,6 @@ class App < CouchRest::Model::Base
   property :heroku_id
   property :callback_url
   property :plan
+  property :last_ran, Time
+  timestamps!
 end
