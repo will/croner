@@ -9,11 +9,15 @@ end
 
 describe HourlyScan, '.perform' do
   before(:each) do
-    DB.save_doc :heroku_id => "app123@heroku.com"
-    DB.save_doc :heroku_id => "app888@heroku.com"
+    @app1 = App.create
+    @app2 = App.create
   end
 
-  it "should find apps that need to run this hour"
+  it "should enqueue a job for each app" do
+    Resque.should_receive(:enqueue).with(RunAppCron, @app1.id)
+    Resque.should_receive(:enqueue).with(RunAppCron, @app2.id)
+    HourlyScan.perform
+  end
 
-  it "should enqueue a job for each"
+  it "should only enqueue apps that need to run this hour"
 end
