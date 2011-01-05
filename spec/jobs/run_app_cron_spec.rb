@@ -8,25 +8,35 @@ describe RunAppCron do
 end
 
 describe RunAppCron, '.perform' do
-  before(:each) do
-    @app = App.create
+  context 'with app present' do
+    before(:each) do
+      @app = App.create
+    end
+
+    def do_perform
+      RunAppCron.perform(@app.id)
+    end
+
+    it 'should get passed an the app from the id' do
+      App.should_receive(:get).with(@app.id).and_return(@app)
+      do_perform
+    end
+
+    it 'should have heroku run the cron job'
+    it 'should record the run'
+    it 'should update the last attempt time' do
+      @app.last_attempted.should be_nil
+      do_perform
+      refreshed = App.get @app.id
+      refreshed.last_attempted.should_not be_nil
+    end
   end
 
-  def do_perform
-    RunAppCron.perform(@app.id)
-  end
-
-  it 'should get passed an the app from the id' do
-    App.should_receive(:get).with(@app.id).and_return(@app)
-    do_perform
-  end
-
-  it 'should have heroku run the cron job'
-  it 'should record the run'
-  it 'should update the last attempt time' do
-    @app.last_attempted.should be_nil
-    do_perform
-    refreshed = App.get @app.id
-    refreshed.last_attempted.should_not be_nil
+  context 'when app has been deleted' do
+    it 'should not enqueue another job' do
+      Resque.should_not_receive :enqueue
+      Resque.should_not_receive :enqueue_in
+      RunAppCron.perform "missing app"
+    end
   end
 end

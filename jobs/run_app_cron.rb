@@ -7,7 +7,7 @@ class RunAppCron
       if app
         puts "run for #{id}"
         record_attempt_for app
-        Resque.enqueue_in 10.seconds, self, id
+        app.enqueue_next
         #do_job
       else
         puts "#{id} no longer present"
