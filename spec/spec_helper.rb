@@ -15,5 +15,9 @@ RSpec.configure do |config|
   config.before(:each) do
     DB.recreate!
   end
+
+  config.after(:each) do
+    Redis.new.flushall
+  end
 end
 
