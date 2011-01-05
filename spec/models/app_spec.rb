@@ -5,6 +5,7 @@ describe App do
   it { should respond_to(:callback_url) }
   it { should respond_to(:plan) }
   it { should respond_to(:period) }
+  it { should respond_to(:total_runs) }
   it { should respond_to(:last_attempted) }
   it { should respond_to(:next_scheduled) }
   it { should respond_to(:created_at) }
@@ -45,15 +46,23 @@ describe App, '#enqueue_next' do
 end
 
 describe App, "#post_cron_job" do
+  before(:each) do
+    RestClient.stub!(:post)
+    @app = App.new(:heroku_id => "an id")
+  end
+
   it 'should make a post' do
-    app = App.new(:heroku_id => "an id")
     ENV['CRON_POST_URL'] = 'something'
     RestClient.should_receive(:post) do |url, *args|
       url.should == 'something'
-      args.should include(JSON.dump({:heroku_id => app.heroku_id}))
+      args.should include(JSON.dump({:heroku_id => @app.heroku_id}))
       args.should include({:content_type => :json})
     end
-    app.post_cron_job
+    @app.post_cron_job
+  end
+
+  it 'should increase total runs' do
+    expect { @app.post_cron_job }.to change(@app, :total_runs).by(1)
   end
 end
 

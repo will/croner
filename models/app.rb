@@ -4,6 +4,7 @@ class App < CouchRest::Model::Base
   property :callback_url
   property :plan
   property :period, Integer, :default => 60
+  property :total_runs, Integer, :default => 0
   property :last_attempted, Time
   property :next_scheduled, Time
   timestamps!
@@ -20,9 +21,11 @@ class App < CouchRest::Model::Base
   end
 
   def post_cron_job
-    RestClient.post(
+    response = RestClient.post(
       ENV['CRON_POST_URL'],
       JSON.dump({:heroku_id => heroku_id}),
       :content_type => :json)
+    self.total_runs += 1
+    response
   end
 end
