@@ -5,6 +5,7 @@ class App < CouchRest::Model::Base
   property :plan
   property :period, Integer, :default => 10
   property :last_attempted, Time
+  property :next_scheduled, Time
   timestamps!
 
   after_create :enqueue
@@ -15,5 +16,6 @@ class App < CouchRest::Model::Base
 
   def enqueue_next
     Resque.enqueue_in period, RunAppCron, id
+    self.next_scheduled = Time.now + period
   end
 end

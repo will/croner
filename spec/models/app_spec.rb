@@ -6,6 +6,7 @@ describe App do
   it { should respond_to(:plan) }
   it { should respond_to(:period) }
   it { should respond_to(:last_attempted) }
+  it { should respond_to(:next_scheduled) }
   it { should respond_to(:created_at) }
   it { should respond_to(:updated_at) }
 end
@@ -35,7 +36,11 @@ describe App, '#enqueue_next' do
   end
 
   it 'should set its next time' do
+    app = App.create(:period => 1.day.to_i)
+    app.enqueue_next
 
+    delta = app.next_scheduled.to_i - 1.day.from_now.to_i
+    delta.should == 0
   end
 end
 
