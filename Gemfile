@@ -8,6 +8,7 @@ gem 'couchrest_model', :git => 'git://github.com/couchrest/couchrest_model'
 gem 'clockwork'
 
 gem 'resque'
+gem 'resque-scheduler'
 
 gem 'thin'
 
