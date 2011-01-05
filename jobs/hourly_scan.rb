@@ -3,6 +3,7 @@ class HourlyScan
 
   class << self
     def perform
+      puts "scan"
       apps_to_run.each do |app|
         Resque.enqueue RunAppCron, app.id
       end

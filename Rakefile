@@ -1,4 +1,4 @@
-require 'env'
+require 'config/env'
 require 'resque/tasks'
 
 task "resque:setup" do
