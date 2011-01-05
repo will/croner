@@ -13,11 +13,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    begin
-      DB.recreate! unless 0 == DB.info['update_seq']
-    rescue RestClient::ResourceNotFound
-      CouchRest.database!(DB.name)
-    end
+    DB.recreate!
   end
 end
 

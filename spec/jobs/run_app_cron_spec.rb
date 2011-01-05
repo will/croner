@@ -23,10 +23,10 @@ describe RunAppCron, '.perform' do
 
   it 'should have heroku run the cron job'
   it 'should record the run'
-  it 'should update the last ran time' do
-    @app.last_ran.should be_nil
+  it 'should update the last attempt time' do
+    @app.last_attempted.should be_nil
     do_perform
     refreshed = App.get @app.id
-    refreshed.last_ran.should_not be_nil
+    refreshed.last_attempted.should_not be_nil
   end
 end
