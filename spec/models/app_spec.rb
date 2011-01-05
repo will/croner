@@ -21,7 +21,6 @@ end
 
 describe App, '#enqueue' do
   it 'should enqueue itself' do
-    Resque.stub!(:enqueue)
     app = App.create
     Resque.should_receive(:enqueue).with(RunAppCron, app.id)
     app.enqueue
@@ -30,10 +29,13 @@ end
 
 describe App, '#enqueue_next' do
   it 'should enqueue itself in period seconds' do
-    Resque.stub!(:enqueue)
     app = App.create(:period => 8675309)
     Resque.should_receive(:enqueue_in).with(8675309, RunAppCron, app.id)
     app.enqueue_next
+  end
+
+  it 'should set its next time' do
+
   end
 end
 
