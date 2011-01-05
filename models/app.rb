@@ -19,10 +19,9 @@ class App < CouchRest::Model::Base
     self.next_scheduled = Time.now + period
   end
 
-  PostUrl = 'https://api.mark.herokudev.com/cron'
   def post_cron_job
     RestClient.post(
-      PostUrl,
+      ENV['CRON_POST_URL'],
       JSON.dump({:heroku_id => heroku_id}),
       :content_type => :json)
   end

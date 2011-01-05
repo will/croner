@@ -47,8 +47,9 @@ end
 describe App, "#post_cron_job" do
   it 'should make a post' do
     app = App.new(:heroku_id => "an id")
+    ENV['CRON_POST_URL'] = 'something'
     RestClient.should_receive(:post) do |url, *args|
-      url.should == App::PostUrl
+      url.should == 'something'
       args.should include(JSON.dump({:heroku_id => app.heroku_id}))
       args.should include({:content_type => :json})
     end
