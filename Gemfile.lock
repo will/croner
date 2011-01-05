@@ -30,7 +30,6 @@ GEM
     activesupport (3.0.3)
     backports (1.18.2)
     builder (2.1.2)
-    clockwork (0.2.3)
     couchrest (1.0.1)
       json (>= 1.4.6)
       mime-types (>= 1.15)
@@ -107,7 +106,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  clockwork
   couchrest
   couchrest_model!
   rack-test
