@@ -1,16 +1,26 @@
 require 'spec/spec_helper'
 
 describe 'provisioning' do
-  it 'should return an id' do
-    post '/heroku/resources', '{}'
-    last_response.status.should == 200
-    parsed.should have_key('id')
-    parsed['id'].should_not be_nil
+  context 'on success' do
+    it 'should return an id' do
+      post '/heroku/resources', '{}'
+      last_response.status.should == 200
+      parsed.should have_key('id')
+      parsed['id'].should_not be_nil
+    end
+
+    it 'should save a record' do
+      post '/heroku/resources', {"heroku_id" => "app123@heroku.com"}.to_json
+      DB.get(parsed['id'])['heroku_id'].should == "app123@heroku.com"
+    end
   end
 
-  it 'should save a record' do
-    post '/heroku/resources', {"heroku_id" => "app123@heroku.com"}.to_json
-    DB.get(parsed['id'])['heroku_id'].should == "app123@heroku.com"
+  context 'on failure' do
+    it 'should be a 500' do
+      App.stub(:new).and_return mock(:app, :save => false)
+      post '/heroku/resources', '{}'
+      last_response.status.should == 500
+    end
   end
 end
 

@@ -1,4 +1,4 @@
-require 'env'
+require 'config/env'
 require 'clockwork'
 require 'jobs'
 include Clockwork

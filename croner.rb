@@ -1,13 +1,7 @@
-require 'env'
+require 'config/env'
 require 'sinatra'
 require 'sinatra/reloader'
-require 'couchrest'
-
-if ENV['RACK_ENV'] == 'production'
-  DB = CouchRest.database "http://withadoutheryraltionaper:yVF6gxqRqmsccBiawOcUraBs@will.cloudant.com/croner"
-else
-  DB = CouchRest.database! 'croner'
-end
+require 'json'
 
 class Croner < Sinatra::Base
   configure(:development) do
@@ -25,8 +19,12 @@ class Croner < Sinatra::Base
 
   post '/heroku/resources' do
     body = JSON.parse request.body.string
-    doc = DB.save_doc body
-    {:id => doc['id']}.to_json
+    app = App.new body
+    if app.save
+      {:id => app.id}.to_json
+    else
+      status 500
+    end
   end
 
   delete '/heroku/resources/:id' do
