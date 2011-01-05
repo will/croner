@@ -2,6 +2,7 @@ require 'config/env'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'haml'
 
 class Croner < Sinatra::Base
   configure(:development) do
@@ -14,7 +15,8 @@ class Croner < Sinatra::Base
   end unless ENV['RACK_ENV']=='test'
 
   get '/' do
-    "hello"
+    #App.all.to_json
+    haml :index
   end
 
   post '/heroku/resources' do

@@ -9,7 +9,7 @@ class RunAppCron
         record_attempt_for app
         app.enqueue_next
         app.save
-        #do_job
+        #do_job api.mark.herokudev.com/cron
       else
         puts "#{id} no longer present"
       end
