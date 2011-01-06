@@ -18,6 +18,7 @@
           %th last attempted
           %th next run
           %th total runs
+          %th failed runs
       %tbody
         - @apps.each do |app|
           %tr
@@ -26,6 +27,7 @@
             %td= app.last_attempted
             %td= app.next_scheduled
             %td= app.total_runs
+            %td= app.failed_runs
 
     %script(src='jquery.js')
     %script(src='jquery.dataTables.min.js')

@@ -6,6 +6,7 @@ describe App do
   it { should respond_to(:plan) }
   it { should respond_to(:period) }
   it { should respond_to(:total_runs) }
+  it { should respond_to(:failed_runs) }
   it { should respond_to(:last_attempted) }
   it { should respond_to(:next_scheduled) }
   it { should respond_to(:created_at) }
@@ -82,6 +83,10 @@ describe App, "#post_cron_job" do
 
     it 'should return false' do
       @app.post_cron_job.should be_false
+    end
+
+    it 'should increase failed runs' do
+      expect { @app.post_cron_job }.to change(@app, :failed_runs).by(1)
     end
   end
 end

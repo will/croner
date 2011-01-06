@@ -5,6 +5,7 @@ class App < CouchRest::Model::Base
   property :plan
   property :period, Integer, :default => 60
   property :total_runs, Integer, :default => 0
+  property :failed_runs, Integer, :default => 0
   property :last_attempted, Time
   property :next_scheduled, Time
   timestamps!
@@ -33,6 +34,7 @@ class App < CouchRest::Model::Base
       self.total_runs += 1
       true
     rescue RestClient::Exception
+      self.failed_runs += 1
       false
     end
   end
