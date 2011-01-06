@@ -8,7 +8,9 @@ class RunAppCron
         puts "run for #{id}"
         record_attempt_for app
         app.enqueue_next
-        app.post_cron_job
+        unless app.post_cron_job
+          app.retry
+        end
         app.save
       else
         puts "#{id} no longer present"

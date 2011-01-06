@@ -16,8 +16,12 @@ class App < CouchRest::Model::Base
   end
 
   def enqueue_next
-    Resque.enqueue_in period, RunAppCron, id
+    enqueue_in period
     self.next_scheduled = Time.now + period
+  end
+
+  def retry
+    enqueue_in 2
   end
 
   def post_cron_job
@@ -31,5 +35,11 @@ class App < CouchRest::Model::Base
     rescue RestClient::Exception
       false
     end
+  end
+
+  private
+
+  def enqueue_in(time)
+    Resque.enqueue_in time, RunAppCron, id
   end
 end
