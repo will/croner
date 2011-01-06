@@ -47,22 +47,42 @@ end
 
 describe App, "#post_cron_job" do
   before(:each) do
-    RestClient.stub!(:post)
+    @endpoint = 'http://stubbed.com/endpoint'
+    ENV['CRON_POST_URL'] = @endpoint
     @app = App.new(:heroku_id => "an id")
   end
 
-  it 'should make a post' do
-    ENV['CRON_POST_URL'] = 'something'
-    RestClient.should_receive(:post) do |url, *args|
-      url.should == 'something'
-      args.should include(JSON.dump({:heroku_id => @app.heroku_id}))
-      args.should include({:content_type => :json})
+  context 'successful job' do
+    before(:each) do
+      stub_request(:post, 'stubbed.com/endpoint').to_return(:body => "ok", :status => 200)
     end
-    @app.post_cron_job
+
+    it 'should make a post' do
+      RestClient.should_receive(:post) do |url, *args|
+        url.should == @endpoint
+        args.should include(JSON.dump({:heroku_id => @app.heroku_id}))
+        args.should include({:content_type => :json})
+      end
+      @app.post_cron_job
+    end
+
+    it 'should increase total runs' do
+      expect { @app.post_cron_job }.to change(@app, :total_runs).by(1)
+    end
+
+    it 'should be true' do
+      @app.post_cron_job.should be_true
+    end
   end
 
-  it 'should increase total runs' do
-    expect { @app.post_cron_job }.to change(@app, :total_runs).by(1)
+  context "unsuccessful job" do
+    before(:each) do
+      stub_request(:post, 'stubbed.com/endpoint').to_return(:body => "ok", :status => 500)
+    end
+
+    it 'should return false' do
+      @app.post_cron_job.should be_false
+    end
   end
 end
 

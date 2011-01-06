@@ -21,11 +21,15 @@ class App < CouchRest::Model::Base
   end
 
   def post_cron_job
-    response = RestClient.post(
-      ENV['CRON_POST_URL'],
-      JSON.dump({:heroku_id => heroku_id}),
-      :content_type => :json)
-    self.total_runs += 1
-    response
+    begin
+      response = RestClient.post(
+        ENV['CRON_POST_URL'],
+        JSON.dump({:heroku_id => heroku_id}),
+        :content_type => :json)
+      self.total_runs += 1
+      true
+    rescue RestClient::Exception
+      false
+    end
   end
 end
